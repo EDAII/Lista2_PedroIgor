@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from math import ceil
+from src import numbers_gen
 
 def start():
     pygame.init()
@@ -16,7 +17,6 @@ def start():
     while w < 705:
         card_pos.append((w, 200))
         w += 70
-    print(len(card_pos))
     # criando superfície das cartas
     card_skin = pygame.Surface((60, 90))
     card_skin.fill((150, 65, 200))
@@ -24,8 +24,16 @@ def start():
     card_skin_first.fill((0,0,255))
     card_skin_second = pygame.Surface((60, 90))
     card_skin_second.fill((0,255,0))
+    # criando fonte dos números das cartas
+    myfont = pygame.font.SysFont('bold', 48)
     first = []
     second = []
+    dict = {}
+    numbers = numbers_gen.numbers_gen()
+    i = 0
+    while i < len(numbers):
+        dict[card_pos[i]] = numbers[i]
+        i+=1
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -45,6 +53,13 @@ def start():
 
         pygame.display.update()
         screen.fill((0, 0, 0))
+
+        if second != [] and first != []:
+            print(first)
+            print(second)
+            i = 0
+
+
         i = 0
         while i < len(card_pos):
             show = card_skin
@@ -54,4 +69,9 @@ def start():
                 show = card_skin_second
             screen.blit(show, card_pos[i])
             i+=1
+        for pos in card_pos:
+            number_surface = myfont.render(str(dict[pos]), False, (255, 255, 255))
+            screen.blit(number_surface, (pos[0]+2, pos[1] + 30))
+
+
 
