@@ -1,9 +1,9 @@
-import copy
 #retorna vetor ordenado e swaps
-def insertion_sort(vetor):
+def selection_sort(vetor):
     pos = 0
     i = 0
     swaps = 0
+    swaps_reg = []
     while i < len(vetor):
         comp = vetor[i]
         comp_pos = i
@@ -14,13 +14,11 @@ def insertion_sort(vetor):
                 comp_pos = j
             j+=1
             if j == len(vetor):
-                if vetor[pos]!= comp:
+                if vetor[pos]!= comp and comp_pos!=pos:
                     swaps += 1
+                    swaps_reg.append((comp_pos, pos))
                 vetor[comp_pos], vetor[pos] = vetor[pos], comp
-
                 pos+=1
         i+=1
-    print('hehehe')
-    print(vetor, swaps)
-    return vetor, swaps
-insertion_sort([5,6,7,8,4,1,2,3,9])
+    print(swaps_reg)
+    return vetor, swaps, swaps_reg

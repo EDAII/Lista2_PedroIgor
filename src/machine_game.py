@@ -1,12 +1,9 @@
 import pygame
 from pygame.locals import *
-from math import ceil
-from src import numbers_gen
-import copy
-from src import sort_algs
-from src import machine_game
 import time
-def start():
+from src import result_screen
+
+def start(numbers, machine_steps, machine_swaps, user_swaps):
     pygame.init()
 
     screen_size = (710, 512)
@@ -32,35 +29,22 @@ def start():
     first = []
     second = []
     dict = {}
-    numbers = numbers_gen.numbers_gen()
-    copy_numbers = copy.copy(numbers)
     i = 0
-    sorted_numbers = copy.copy(numbers)
-    user_swaps = 0
-    sorted_numbers, machine_swaps, machine_steps = sort_algs.selection_sort(sorted_numbers)
+
     while i < len(numbers):
         dict[card_pos[i]] = numbers[i]
         i+=1
+    step = 0
+
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
-            elif event.type == MOUSEBUTTONDOWN:
-                mouse_position = (pygame.mouse.get_pos()[1], pygame.mouse.get_pos()[0])
-                if mouse_position[0] >= 200 and mouse_position[0] <= 290:
-                    card_selected = ceil(mouse_position[1]/70)-1
-                    if card_selected == first:
-                        first = []
-                    elif first == []:
-                        first = card_selected
-                    elif second == []:
-                        second = card_selected
-                    else:
-                        first = card_selected
-                        second = []
-
         screen.fill((0, 0, 0))
+
+        first, second = machine_steps[step]
+        step+=1
 
         i = 0
         while i < len(card_pos):
@@ -76,10 +60,9 @@ def start():
         for pos in card_pos:
             number_surface = myfont.render(str(dict[pos]), False, (255, 255, 255))
             screen.blit(number_surface, (pos[0] + 2, pos[1] + 30))
-
         pygame.display.update()
-        if first != [] and second != []:
-            time.sleep(0.5)
+        time.sleep(3)
+
 
 
         if second != [] and first != []:
@@ -96,9 +79,6 @@ def start():
                 b+=1
             dict[pos_a], dict[pos_b] = dict[pos_b], dict[pos_a]
             numbers[first], numbers[second] = numbers[second], numbers[first]
-            user_swaps+=1
-            first = []
-            second = []
-            #if True:
-            if numbers == sorted_numbers:
-                machine_game.start(copy_numbers, machine_steps, machine_swaps, user_swaps)
+        if step == len(machine_steps):
+            result_screen.begin(machine_swaps, user_swaps)
+
