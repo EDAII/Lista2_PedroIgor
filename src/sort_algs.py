@@ -20,5 +20,4 @@ def selection_sort(vetor):
                 vetor[comp_pos], vetor[pos] = vetor[pos], comp
                 pos+=1
         i+=1
-    print(swaps_reg)
     return vetor, swaps, swaps_reg
