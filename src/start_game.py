@@ -10,6 +10,8 @@ def start():
     pygame.init()
 
     screen_size = (710, 512)
+    start_music = pygame.mixer.Sound("snd/start.wav")
+    start_music.play(-1)
 
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption('Sort the cards')
@@ -49,6 +51,8 @@ def start():
             elif event.type == MOUSEBUTTONDOWN:
                 mouse_position = (pygame.mouse.get_pos()[1], pygame.mouse.get_pos()[0])
                 if mouse_position[0] >= 200 and mouse_position[0] <= 290:
+                    select_sound = pygame.mixer.Sound("snd/button-25.wav")
+                    select_sound.play()
                     card_selected = ceil(mouse_position[1]/70)-1
                     if card_selected == first:
                         first = []
@@ -101,4 +105,5 @@ def start():
             second = []
             #if True:
             if numbers == sorted_numbers:
+                start_music.stop()
                 machine_game.start(copy_numbers, machine_steps, machine_swaps, user_swaps)

@@ -5,7 +5,8 @@ from src import result_screen
 
 def start(numbers, machine_steps, machine_swaps, user_swaps):
     pygame.init()
-
+    start_music = pygame.mixer.Sound("snd/start.wav")
+    start_music.play(-1)
     screen_size = (710, 512)
 
     screen = pygame.display.set_mode(screen_size)
@@ -80,5 +81,6 @@ def start(numbers, machine_steps, machine_swaps, user_swaps):
             dict[pos_a], dict[pos_b] = dict[pos_b], dict[pos_a]
             numbers[first], numbers[second] = numbers[second], numbers[first]
         if step == len(machine_steps):
+            start_music.stop()
             result_screen.begin(machine_swaps, user_swaps)
 
